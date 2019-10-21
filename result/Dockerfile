@@ -8,6 +8,6 @@ RUN npm install
 
 COPY . /usr/src/app
 
-EXPOSE 4242
+EXPOSE 5858
 
 CMD [ "node", "server.js" ]

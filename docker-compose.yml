@@ -1,0 +1,55 @@
+version: '3'
+
+services:
+  poll:
+    build: ./poll
+    ports:
+      - "80:80"
+    networks:
+      - poll-tier
+
+  result:
+    build: ./result
+    ports:
+      - 5858:5858
+    depends_on:
+      - db
+    networks:
+      - result-tier
+
+  worker:
+    build: ./worker
+    depends_on:
+      - redis
+    restart: unless-stopped
+    networks:
+      - back-tier
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - poll-tier
+      - back-tier
+
+  db:
+    image: postgres:alpine
+    networks:
+      - result-tier
+      - back-tier
+    ports:
+      - "5432:5432"
+    # volumes:
+    #    - db-data:/var/lib/postgresql/data
+
+# volumes:
+#   db-data:
+#     - ./
+
+networks:
+  poll-tier:
+
+  result-tier:
+
+  back-tier:

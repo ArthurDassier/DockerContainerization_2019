@@ -16,6 +16,4 @@ WORKDIR /usr/src/app
 
 COPY --from=builder /usr/src/app/* ./
 
-EXPOSE 80
-
 CMD ["java", "-jar", "worker-jar-with-dependencies.jar"]

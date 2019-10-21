@@ -1590,7 +1590,7 @@ function Socket(uri, opts){
 
   this.agent = opts.agent || false;
   this.hostname = opts.hostname ||
-    (global.location ? location.hostname : 'localhost');
+    (global.location ? location.hostname : 'db');
   this.port = opts.port || (global.location && location.port ?
        location.port :
        (this.secure ? 443 : 80));
