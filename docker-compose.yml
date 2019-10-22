@@ -4,7 +4,7 @@ services:
   poll:
     build: ./poll
     ports:
-      - 80:80
+      - 5000:80
     depends_on:
       - redis
     networks:
@@ -13,7 +13,7 @@ services:
   result:
     build: ./result
     ports:
-      - 4242:4242
+      - 5001:80
     depends_on:
       - db
     networks:
