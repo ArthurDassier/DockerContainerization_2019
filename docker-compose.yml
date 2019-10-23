@@ -11,6 +11,11 @@ services:
       - redis
     networks:
       - poll-tier
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
 
   result:
     build: ./result
@@ -20,6 +25,11 @@ services:
       - db
     networks:
       - result-tier
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
 
   worker:
     build: ./worker
@@ -28,6 +38,11 @@ services:
     restart: unless-stopped
     networks:
       - back-tier
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
 
   redis:
     image: redis:alpine
@@ -36,6 +51,11 @@ services:
     networks:
       - poll-tier
       - back-tier
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
 
   db:
     image: postgres:alpine
@@ -47,6 +67,11 @@ services:
     restart: unless-stopped
     volumes:
       - db-data:/var/lib/postgresql/data
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
 
 volumes:
   db-data:
