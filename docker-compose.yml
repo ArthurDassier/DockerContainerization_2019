@@ -35,6 +35,7 @@ services:
     build: ./worker
     depends_on:
       - redis
+      - db
     restart: unless-stopped
     networks:
       - back-tier
