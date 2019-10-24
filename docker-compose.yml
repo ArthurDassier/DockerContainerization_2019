@@ -3,8 +3,6 @@ version: '3'
 services:
   poll:
     build: ./poll
-    environment:
-      - FLASK_ENV=development
     ports:
       - 5000:80
     depends_on:
@@ -30,6 +28,14 @@ services:
       options:
         max-size: "200k"
         max-file: "10"
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: '0.50'
+    #       memory: 50M
+    #     reservations:
+    #       cpus: '0.25'
+    #       memory: 20M
 
   worker:
     build: ./worker
