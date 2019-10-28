@@ -15,8 +15,12 @@ app = Flask(__name__)
 
 
 def get_redis():
-    if not hasattr(g, 'redis'):
-        g.redis = Redis(host="redis", db=0, socket_timeout=5)
+    try:
+        if not hasattr(g, os.environ["REDIS_HOSTNAME"]):
+            g.redis = Redis(host=os.environ["REDIS_HOSTNAME"], db=0, socket_timeout=5)
+    except:
+        if not hasattr(g, 'redis'):
+            g.redis = Redis(host="redis", db=0, socket_timeout=5)
     return g.redis
 
 
@@ -48,4 +52,7 @@ def hello():
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=80, debug=True, threaded=True)
+    try:
+        app.run(host='0.0.0.0', port=os.environ["REDIS_PORT"], debug=True, threaded=True)
+    except:
+        app.run(host='0.0.0.0', port=80, debug=True, threaded=True)
