@@ -26,10 +26,11 @@ async.retry(
   {times: 1000, interval: 1000},
   function(callback) {
     try {
-      var postgres=process.env.POSTGRES_USER;
-      var password=process.env.POSTGRES_PASSWORD;
-      var postgres_db=process.env.POSTGRES_DB;
-      pg.connect(`${postgres}://${postgres}:${password}@db/${postgres_db}`, function(err, client, done) {
+      var postgres = process.env.POSTGRES_USER;
+      var password = process.env.POSTGRES_PASSWORD;
+      var postgres_db = process.env.POSTGRES_DB;
+      var postgres_dns = process.env.POSTGRES_DNS;
+      pg.connect(`${postgres_db}://${postgres}:${password}@${postgres_dns}/${postgres_db}`, function(err, client, done) {
           if (err) {
               console.error("Waiting for db");
           }

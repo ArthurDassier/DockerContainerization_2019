@@ -7,9 +7,17 @@ import org.json.JSONObject;
 
 class Worker {
   public static void main(String[] args) {
+    Jedis redis;
+    Connection dbConn;
     try {
-        Jedis redis = connectToRedis("redis");
-        Connection dbConn = connectToDB("db");
+      try {
+        redis = connectToRedis(System.getenv("REDIS_HOSTNAME"));
+        dbConn = connectToDB(System.getenv("POSTGRES_DNS"));
+      }
+      catch (Exception e) {
+        redis = connectToRedis("redis");
+        dbConn = connectToDB("db");
+      }
 
         System.err.println("Watching vote queue");
 
@@ -72,10 +80,19 @@ class Worker {
 
       while (conn == null) {
         try {
-            conn = DriverManager.getConnection(url, System.getenv("POSTGRES_USER"), System.getenv("POSTGRES_PASSWORD"));
-        } catch (SQLException e) {
-          System.err.println("Waiting for db");
-          sleep(1000);
+          try {
+              conn = DriverManager.getConnection(url, System.getenv("POSTGRES_USER"), System.getenv("POSTGRES_PASSWORD"));
+          } catch (SQLException e) {
+            System.err.println("Waiting for db");
+            sleep(1000);
+          }
+      } catch(Exception e) {
+          try {
+            conn = DriverManager.getConnection(url, "postgres", "password");
+          } catch (SQLException err) {
+            System.err.println("Waiting for db");
+            sleep(1000);
+          }
         }
       }
 
